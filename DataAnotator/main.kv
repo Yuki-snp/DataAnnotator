@@ -1,0 +1,62 @@
+MyWidget
+
+<MyWidget>
+    orientation: "vertical"
+
+    ActionBar:
+        ActionView:
+            ActionPrevious:
+                title: "Data Annotator"
+                with_previous: False
+
+            FileManager:
+                id: FileManager
+                text: 'ファイル'
+                ActionButton:
+                    text: '読み込む'
+                    on_press: print("push ");app.root.ids['FileManager'].file_load()
+                ActionButton:
+                    text: '保存'
+                    on_press: print("push ");app.root.ids['FileManager'].file_save()
+                ActionButton:
+                    text: '書き出し'
+                    on_press: print("push ");app.root.ids['FileManager'].file_build_csv()
+
+    MainArea:
+
+<MainArea@BoxLayout>
+    orientation: "horizontal"
+
+    SelectArea:
+        size_hint_x: 1
+
+    AnnotateArea:
+        size_hint_x: 4
+
+<SelectArea@GridLayout>
+
+    rows: 10
+    Label:
+        text: "あいうえお"
+    Label:
+        text: "あいうえお"
+    Label:
+        text: "あいうえお"
+    Label:
+        text: "あいうえお"
+    Label:
+        text: "あいうえお"
+
+
+<AnnotateArea@GridLayout>
+
+    rows: 2
+
+    Label:
+        center_x: root.width
+        center_y: root.height
+        text: "Hello World"
+        font_size: 70
+        color: 1,0,1,1
+
+    BoxLayout:
