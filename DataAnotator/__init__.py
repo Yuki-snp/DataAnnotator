@@ -36,7 +36,6 @@ class MainApp(App):
         super(MainApp, self).__init__(**kwargs)
         self.title = 'Data Annotator'
 
-
 # Run
 if __name__ == "__main__":
     MainApp().run()

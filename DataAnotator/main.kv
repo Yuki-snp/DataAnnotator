@@ -33,30 +33,93 @@ MyWidget
     AnnotateArea:
         size_hint_x: 4
 
-<SelectArea@GridLayout>
+<SelectArea>
 
-    rows: 10
-    Label:
-        text: "あいうえお"
-    Label:
-        text: "あいうえお"
-    Label:
-        text: "あいうえお"
-    Label:
-        text: "あいうえお"
-    Label:
-        text: "あいうえお"
+    rows: 2
+    canvas.after:
+        Color:
+            rgba: 1, 1, 1, 1
+        Line:
+            rectangle: self.x+1,self.y+1,self.width-1,self.height-1
 
+    ScrollView:
+        do_scroll_x: False
+        size_hint_y: 9
+        GridLayout:
+            id: SelectDatas
+            cols:1
+            size_hint_y: None
+            row_default_height: self.parent.height/10
+            height: self.minimum_height
+            #SelectButton:
+                #text: "1:A"
+            #SelectButton:
+                #text: "2:B"
+    GridLayout:
+        cols: 2
+        size_hint_y: 1
+        orientation: "horizontal"
+        Button:
+            text: "<"
+            on_press: root.data_left()
+        Button:
+            text: ">"
+            on_press: root.data_right()
 
-<AnnotateArea@GridLayout>
+<SelectButton>
+    text_size: self.size
+    halign: 'left'
+    valign: 'center'
+    on_press: print(root.index);root.show(root.index)
+
+<AnnotateArea>
 
     rows: 2
 
-    Label:
-        center_x: root.width
-        center_y: root.height
-        text: "Hello World"
-        font_size: 70
-        color: 1,0,1,1
-
     BoxLayout:
+        spacing: 10
+        padding: 10
+
+        BoxLayout:
+            spacing: 10
+            padding: 10
+            id: showArea
+            canvas.before:
+                Color:
+                    rgba: .2, .2, .2, 1
+                Rectangle:
+                    pos: self.pos
+                    size: self.size
+            ShowText:
+                text: "ファイル＞読み込む　から　.txtか.csvファイルを選択"
+                halign: 'center'
+                valign: 'center'
+
+    ScrollView:
+        spacing: 10
+        padding: 10
+        GridLayout:
+            id: pressArea
+            cols:1
+            size_hint_y: None
+            row_default_height: self.parent.height/5
+            height: self.minimum_height
+            #AnswerButton:
+                #text: "1:A"
+            #AnswerButton:
+                #text: "2:B"
+
+<ShowText>
+    text_size: self.size
+    #color: 0,0,0,1
+    halign: 'left'
+    valign: 'top'
+
+<AnswerButton>
+    text_size: self.size
+    halign: 'left'
+    valign: 'center'
+    on_press: print(root.index,root.answer);root.put_answer(root.index, root.answer)
+
+<CreateAnswerButton>
+    on_press: print("create answer");root.add_answers(root.index)

@@ -9,6 +9,8 @@ from kivy.properties import ObjectProperty
 from kivy.uix.floatlayout import FloatLayout
 from kivy.lang import Builder
 from DataAnotator import FileProcesser
+from kivy.app import App
+from DataAnotator import Annotator
 import os
 Builder.load_file('file.kv')
 
@@ -44,11 +46,15 @@ class FileManager(ActionGroup):
     # データをロードする時の動作
     def load(self, path, filename):
         if filename:
-            if os.path.splitext(filename)[1] in ["txt", "csv"]:
-                FileProcesser.load(path, filename)
+            if os.path.splitext(filename[0])[1] in [".txt", ".csv"]:
+                lens, datas = FileProcesser.load(path, filename)
+                s_area = App.get_running_app().root.children[0].children[1]
+                s_area.load_select(lens, datas)
+                s_area.data_select(1)
+                self.dismiss_popup()
             else:
-                #非対応のファイルです
-            self.dismiss_popup()
+                # 非対応のファイルです
+                self.dismiss_popup()
 
     # 保存
     def file_save(self):
