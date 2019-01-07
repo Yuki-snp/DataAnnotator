@@ -5,7 +5,7 @@
 import os
 from kivy.uix.button import Button
 from kivy.app import App
-from DataAnotator import Annotator
+from DataAnnotator import Annotator
 
 
 def load(path, filename):

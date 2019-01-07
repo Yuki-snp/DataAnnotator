@@ -9,7 +9,7 @@ from kivy.properties import ObjectProperty
 from kivy.uix.floatlayout import FloatLayout
 from kivy.lang import Builder
 from kivy.uix.label import Label
-from DataAnotator import FileProcesser
+from DataAnnotator import FileProcesser
 from kivy.app import App
 import os
 Builder.load_file('file.kv')

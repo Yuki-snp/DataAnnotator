@@ -9,7 +9,7 @@ from kivy.uix.boxlayout import BoxLayout
 from kivy.uix.popup import Popup
 from kivy.properties import ObjectProperty
 from kivy.lang import Builder
-from DataAnotator import FileManager
+from DataAnnotator import FileManager
 import os
 
 from kivy.config import Config
