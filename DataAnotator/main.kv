@@ -14,13 +14,13 @@ MyWidget
                 text: 'ファイル'
                 ActionButton:
                     text: '読み込む'
-                    on_press: print("push ");app.root.ids['FileManager'].file_load()
+                    on_press: app.root.ids['FileManager'].file_load()
                 ActionButton:
-                    text: '保存'
-                    on_press: print("push ");app.root.ids['FileManager'].file_save()
+                    text: '一時保存'
+                    on_press: app.root.ids['FileManager'].file_save()
                 ActionButton:
-                    text: '書き出し'
-                    on_press: print("push ");app.root.ids['FileManager'].file_build_csv()
+                    text: '書き出す'
+                    on_press: app.root.ids['FileManager'].file_build_csv()
 
     MainArea:
 
@@ -70,7 +70,7 @@ MyWidget
     text_size: self.size
     halign: 'left'
     valign: 'center'
-    on_press: print(root.index);root.show(root.index)
+    on_press: root.show(root.index)
 
 <AnnotateArea>
 
@@ -81,6 +81,7 @@ MyWidget
         padding: 10
 
         BoxLayout:
+            orientation: "vertical"
             spacing: 10
             padding: 10
             id: showArea
@@ -99,6 +100,7 @@ MyWidget
         spacing: 10
         padding: 10
         GridLayout:
+            padding: 10
             id: pressArea
             cols:1
             size_hint_y: None
@@ -119,7 +121,37 @@ MyWidget
     text_size: self.size
     halign: 'left'
     valign: 'center'
-    on_press: print(root.index,root.answer);root.put_answer(root.index, root.answer)
+    on_press: root.put_answer(root.index, root.answer)
 
 <CreateAnswerButton>
-    on_press: print("create answer");root.add_answers(root.index)
+    text_size: self.size
+    halign: 'left'
+    valign: 'center'
+    on_press: root.add_answers(root.index);
+
+<CreateAnswerDialog>
+    text_input: text_input
+    BoxLayout:
+        size: root.size
+        pos: root.pos
+        orientation: "vertical"
+        cols:2
+
+        TextInput:
+            focus: True
+            hint_text: "ここに選択肢名を入力"
+            id: text_input
+            size_hint_y: None
+            height: 30
+            multiline: False
+
+        BoxLayout:
+            size_hint_y: None
+            height: 30
+            Button:
+                text: "キャンセル"
+                on_release: root.cancel()
+
+            Button:
+                text: "作成"
+                on_release: root.make(root.index, text_input.text)

@@ -8,9 +8,9 @@ from kivy.uix.popup import Popup
 from kivy.properties import ObjectProperty
 from kivy.uix.floatlayout import FloatLayout
 from kivy.lang import Builder
+from kivy.uix.label import Label
 from DataAnotator import FileProcesser
 from kivy.app import App
-from DataAnotator import Annotator
 import os
 Builder.load_file('file.kv')
 
@@ -46,36 +46,52 @@ class FileManager(ActionGroup):
     # データをロードする時の動作
     def load(self, path, filename):
         if filename:
+            s_area = App.get_running_app().root.children[0].children[1]
             if os.path.splitext(filename[0])[1] in [".txt", ".csv"]:
                 lens, datas = FileProcesser.load(path, filename)
-                s_area = App.get_running_app().root.children[0].children[1]
-                s_area.load_select(lens, datas)
-                s_area.data_select(1)
+                s_area.load_select(lens, datas, [])
+                self.dismiss_popup()
+            elif os.path.splitext(filename[0])[1] in [".dant"]:
+                lens, datas, selects = FileProcesser.load_dant(path, filename)
+                s_area.load_select(lens, datas, selects)
                 self.dismiss_popup()
             else:
                 # 非対応のファイルです
-                self.dismiss_popup()
+                content = Label(text="非対応のファイルです")
+                App.get_running_app().root._popup = Popup(title="FileLoadError!", content=content,
+                                    size_hint=(None, None), size=(200, 100) )
+                App.get_running_app().root._popup.open()
 
-    # 保存
+    # 作業中データの保存
     def file_save(self):
         content = SaveDialog(save=self.save, cancel=self.dismiss_popup)
-        self._popup = Popup(title="保存", content=content,
+        self._popup = Popup(title="一時保存", content=content,
                             size_hint=(0.9, 0.9))
         self._popup.open()
 
     def save(self, path, filename):
         if filename!="":
-            FileProcesser.save(path, filename, self.text_input.text)
+            if filename[-5:] != ".dant":
+                filename += ".dant"
+            s_area = App.get_running_app().root.children[0].children[1]
+            data = s_area.data
+            answers = s_area.selects
+            FileProcesser.save(path, filename, data, answers)
             self.dismiss_popup()
 
-    # 書き出し
+    # ファイル書き出し
     def file_build_csv(self):
         content = SaveDialog(save=self.build_csv, cancel=self.dismiss_popup)
-        self._popup = Popup(title="書き出し", content=content,
+        self._popup = Popup(title="書き出す", content=content,
                             size_hint=(0.9, 0.9))
         self._popup.open()
 
     def build_csv(self, path, filename):
         if filename != "":
-            FileProcesser.bulid_csv(path, filename, self.text_input.text)
+            if filename[-4:] != ".csv":
+                filename += ".csv"
+            s_area = App.get_running_app().root.children[0].children[1]
+            data = s_area.data
+            answers = s_area.selects
+            FileProcesser.build_csv(path, filename, data, answers)
             self.dismiss_popup()

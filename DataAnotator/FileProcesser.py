@@ -17,23 +17,60 @@ def load(path, filename):
             datas.append({
                 "Text": line,
                 "Column": line.split(","),  # 使いたい
-                "Answer": -1                 # 正解
+                "Answer": -1  # 正解
             })
-        lens = len(datas)-1
+        lens = len(datas) - 1
         return lens, datas
 
 
-def show(index, datas):
-    return datas[index+1:index+11]
+def load_dant(path, filename):
+    with open(os.path.join(path, filename[0])) as stream:
+        # ロード処理
+        datas = []
+        selects = []
+        load_level = 0
+        ix = 0
+        for line in stream:
+            line = line.strip()
+            if line == "---data_anotator---":
+                load_level += 1
+            elif load_level==0: # 選択肢
+                selects.append(line)
+            elif load_level==1: # データ
+                datas.append({
+                    "Text": line,
+                    "Column": line.split(","),  # 使いたい
+                })
+            elif load_level==2: # 正解
+                datas[ix]["Answer"] = int(line)
+                ix += 1
+        lens = len(datas) - 1
+        return lens, datas, selects
 
 
-def save(path, filename, text):
+def save(path, filename, data, answers):
     with open(os.path.join(path, filename), 'w') as stream:
-        #セーブ処理
-        stream.write(text)
+        # セーブ処理
+        for a in answers:
+            stream.write(a+"\n")
+        stream.write("---data_anotator---\n")
+
+        for d in data:
+            stream.write(d["Text"] + "\n")
+        stream.write("---data_anotator---\n")
+
+        for d in data:
+            stream.write(str(d["Answer"]) + "\n")
 
 
-def build_csv(path, filename, text):
+def build_csv(path, filename, data, answers):
     with open(os.path.join(path, filename), 'w') as stream:
-        #書き出し処理
-        stream.write(text)
+        # 書き出し処理
+        for i, d in enumerate(data):
+            text = d["Text"]
+            if i == 0:
+                text += "," + "Answer"
+            else:
+                ans = answers[d["Answer"]] if d["Answer"] != -1 else ""
+                text += "," + ans
+            stream.write(text + "\n")

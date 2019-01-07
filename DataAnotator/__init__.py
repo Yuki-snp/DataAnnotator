@@ -27,6 +27,7 @@ class MyWidget(BoxLayout):
         super(MyWidget, self).__init__(**kwargs)
 
 
+
 # 起動の宣言みたいなもの
 # kivyではタイトルはAppクラスを継承したサブクラスの名のうち
 # Appの前までと同じ先頭が小文字のファイル名が対応(←ク　ソ)
