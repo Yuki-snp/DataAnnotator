@@ -17,8 +17,9 @@ from kivy.resources import resource_add_path
 from kivy.core.text import LabelBase, DEFAULT_FONT
 Config.set('graphics', 'width', '800')
 Config.set('graphics', 'height', '600')
+Config.set('input', 'mouse', 'mouse,disable_multitouch')
 resource_add_path('fonts')
-LabelBase.register(DEFAULT_FONT, 'ヒラギノ丸ゴ ProN W4.ttc')
+LabelBase.register(DEFAULT_FONT, 'GenShinGothic-Medium.ttf')
 
 
 # GUIの立ち上げまわり
